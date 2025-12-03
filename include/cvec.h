@@ -243,10 +243,19 @@ CvecError cvec_push_double(Cvec *v, double value);
 CvecError cvec_push_ldouble(Cvec *v, long double value);
 
 GetValueChar get_char(Cvec *v, size_t index);
+GetValueUchar get_uchar(Cvec *v, size_t index);
 GetValueString get_string(Cvec *v, size_t index);
-GetValueInt get_int(Cvec *v, int index);
-GetValueFloat get_float(Cvec *v, int index);
-GetValueDouble get_double(Cvec *v, int index);
+GetValueBool get_bool(Cvec *v, size_t index);
+GetValueShort get_short(Cvec *v, size_t index);
+GetValueInt get_int(Cvec *v, size_t index);
+GetValueUint get_uint(Cvec *v, size_t index);
+GetValueLong get_long(Cvec *v, size_t index);
+GetValueLlong get_llong(Cvec *v, size_t index);
+GetValueUlong get_ulong(Cvec *v, size_t index);
+GetValueUllong get_ullong(Cvec *v, size_t index);
+GetValueFloat get_float(Cvec *v, size_t index);
+GetValueDouble get_double(Cvec *v, size_t index);
+GetValueLdouble get_ldouble(Cvec *v, size_t index);
 
 CvecError erase(Cvec *v, size_t index);
 CvecError erase_range(Cvec *v, size_t begin, size_t end);
