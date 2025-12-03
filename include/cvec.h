@@ -1,9 +1,11 @@
 #ifndef CVEC_H
 #define CVEC_H
 
+#include <stdio.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define cvec_init(v, type) \
     _Generic((type)0, \
