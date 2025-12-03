@@ -43,20 +43,20 @@
 
 #define cvec_get(v, index, type) \
     _Generic((type)0, \
-		char: get_char, \
-		unsigned char, ger_uchar, \
-		char*: get_string, \
-		bool: get_bool, \
-		short: get_short, \
+        char: get_char, \
+        unsigned char: get_uchar, \
+        char*: get_string, \
+        bool: get_bool, \
+        short: get_short, \
         int: get_int, \
-		unsigned int: get_uint, \
-		long: get_long, \
-		long long: get_llong, \
-		unsigned long: get_ulong, \
-		unsigned long long: get_ullong, \
+        unsigned int: get_uint, \
+        long: get_long, \
+        long long: get_llong, \
+        unsigned long: get_ulong, \
+        unsigned long long: get_ullong, \
         float: get_float, \
-        double: get_double \
-		long double: get_ldouble \
+        double: get_double, \
+        long double: get_ldouble \
     )(v, index)
 
 #define cvec_insert(v, index, val) \
@@ -140,6 +140,21 @@ typedef struct {
 } GetValueChar;
 
 typedef struct {
+    char value;			
+    CvecError err;		
+} GetValueUchar;
+
+typedef struct {
+    char* value;
+    CvecError err;
+} GetValueString;
+
+typedef struct {
+    bool value;
+    CvecError err;
+} GetValueBool;
+
+typedef struct {
     int value;			
     CvecError err;		
 } GetValueInt;
@@ -154,10 +169,6 @@ typedef struct {
     CvecError err;
 } GetValueDouble;
 
-typedef struct {
-    char* value;
-    CvecError err;
-} GetValueString;
 
 void init_char(Cvec *v);
 void init_uchar(Cvec *v);
@@ -189,7 +200,7 @@ CvecError cvec_push_float(Cvec *v, float value);
 CvecError cvec_push_double(Cvec *v, double value);
 CvecError cvec_push_ldouble(Cvec *v, long double value);
 
-GetValueChar get_char(Cvec v*, size_t index);
+GetValueChar get_char(Cvec *v, size_t index);
 GetValueString get_string(Cvec *v, size_t index);
 GetValueInt get_int(Cvec *v, int index);
 GetValueFloat get_float(Cvec *v, int index);

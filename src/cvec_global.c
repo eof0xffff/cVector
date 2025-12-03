@@ -39,6 +39,16 @@ CvecError cvec_push_ldouble(Cvec *v, long double value) { return push_back(v, &v
 
 
 // Get functions for specific types
+GetValueChar get_char(Cvec *v, size_t index) 
+{
+	char val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueChar) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueChar) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
 GetValueString get_string(Cvec *v, size_t index) 
 {
 	char* val;
