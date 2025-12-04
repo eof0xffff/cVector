@@ -1,4 +1,3 @@
-
 /* Functions only unsed internally by cVector. */
 
 #ifndef CVEC_INTERNAL_H

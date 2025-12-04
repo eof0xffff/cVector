@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Type-generic macros.
+// provide a convenient, type-safe interface for working with vectors 
+// of different data types without manually calling the type-specific functions.
 #define cvec_init(v, type) \
     _Generic((type)0, \
 		char: init_char, \
@@ -95,16 +98,17 @@
 		long double*: insert_range_ldouble \
     )((v), (index), (arr), sizeof(arr)/sizeof((arr)[0]))
 
+// Supported error types
 typedef enum error_msg {
-	CVEC_OK,						// 0
-	CVEC_ERR_ALLOC,					// 1
-	CVEC_ERR_INDEX_OUT_OF_BOUNDS,	// 2
-	CVEC_ERR_INVALID_RANGE,			// 3
-	CVEC_ERR_EMPTY,					// 4
+	CVEC_OK,
+	CVEC_ERR_ALLOC,
+	CVEC_ERR_INDEX_OUT_OF_BOUNDS,
+	CVEC_ERR_INVALID_RANGE,
+	CVEC_ERR_EMPTY,
 	CVEC_ERR_TYPE
 } CvecError;
 
-// Accepted datatype by cvec
+// Accepted datatype's for cvec
 typedef enum cvec_types {
 	CVEC_CHAR,
 	CVEC_UCHAR,
@@ -126,16 +130,12 @@ typedef enum cvec_types {
 typedef struct {
     void *data;          // Pointer at the beginning of the Data-Array
     size_t element_size; // Size of the element (z.B. sizeof(int))
-    size_t length;       // Anzahl der aktuell gespeicherten Elemente
-    size_t capacity;     // Anzahl der Elemente, für die aktuell speicher reserviert wird
+    size_t length;       // Number of the actual saved elements
+    size_t capacity;     // Size of the allocated space
 	CvecType datatype;	 // Datatype of the vector
 } Cvec;
 
-// Return types for the get() function
-/*
- * The value is NULL when an error accours.
- * In err is the specific error.
- */
+// Return types for the get() functions's
 typedef struct {
     char value;			
     CvecError err;		
