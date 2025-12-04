@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 #include "cvec_internals.h"
 
 
@@ -49,6 +47,16 @@ GetValueChar get_char(Cvec *v, size_t index)
 	return (GetValueChar) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
 }
 
+GetValueUchar get_uchar(Cvec *v, size_t index) 
+{
+	unsigned char val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueUchar) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueUchar) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
 GetValueString get_string(Cvec *v, size_t index) 
 {
 	char* val;
@@ -59,7 +67,27 @@ GetValueString get_string(Cvec *v, size_t index)
 	return (GetValueString) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
 }
 
-GetValueInt get_int(Cvec *v, int index) 
+GetValueBool get_bool(Cvec *v, size_t index) 
+{
+	bool val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueBool) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueBool) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+GetValueShort get_short(Cvec *v, size_t index) 
+{
+	short val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueShort) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueShort) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+GetValueInt get_int(Cvec *v, size_t index) 
 {
 	int val;
 	CvecError getVal = get_copy(v, index, &val);
@@ -69,7 +97,58 @@ GetValueInt get_int(Cvec *v, int index)
 	return (GetValueInt) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
 }
 
-GetValueFloat get_float(Cvec *v, int index) 
+GetValueUint get_uint(Cvec *v, size_t index) 
+{
+	unsigned int val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueUint) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueUint) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+GetValueLong get_long(Cvec *v, size_t index) 
+{
+	long val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueLong) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueLong) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+GetValueUlong get_ulong(Cvec *v, size_t index) 
+{
+	unsigned long val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueUlong) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueUlong) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+GetValueLlong get_llong(Cvec *v, size_t index) 
+{
+	long long val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueLlong) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueLlong) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+GetValueUllong get_ullong(Cvec *v, size_t index) 
+{
+	unsigned long long val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueUllong) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueUllong) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+
+GetValueFloat get_float(Cvec *v, size_t index) 
 {
 	float val;
 	CvecError getVal = get_copy(v, index, &val);
@@ -79,7 +158,7 @@ GetValueFloat get_float(Cvec *v, int index)
 	return (GetValueFloat) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
 }
 
-GetValueDouble get_double(Cvec *v, int index) 
+GetValueDouble get_double(Cvec *v, size_t index) 
 {
 	double val;
 	CvecError getVal = get_copy(v, index, &val);
@@ -87,6 +166,16 @@ GetValueDouble get_double(Cvec *v, int index)
 		return (GetValueDouble) { .value = val, .err = CVEC_OK };
 	}
 	return (GetValueDouble) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
+}
+
+GetValueLdouble get_ldouble(Cvec *v, size_t index) 
+{
+	long double val;
+	CvecError getVal = get_copy(v, index, &val);
+	if(getVal == CVEC_OK) {
+		return (GetValueLdouble) { .value = val, .err = CVEC_OK };
+	}
+	return (GetValueLdouble) { .err = CVEC_ERR_INDEX_OUT_OF_BOUNDS };
 }
 
 
@@ -160,4 +249,3 @@ CvecError insert_range_ullong(Cvec *v, size_t index, unsigned long long *arr, si
 CvecError insert_range_float(Cvec *v, size_t index, float *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
 CvecError insert_range_double(Cvec *v, size_t index, double *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
 CvecError insert_range_ldouble(Cvec *v, size_t index, long double *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
-

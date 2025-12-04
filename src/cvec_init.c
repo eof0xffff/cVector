@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include "cvec.h"
 
 void init_char(Cvec *v) {
