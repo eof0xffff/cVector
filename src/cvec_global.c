@@ -1,23 +1,20 @@
 #include "cvec_internals.h"
 
 
-// push_back wrapper functinos for specific datatypes
-/*
- * Each function passes the address of the local variable 'value' to push_back().
- * The value stored at that address is then copied into the vector's memory.
- */
+// Wrapper for core push_back() function to handle differnt datatypes.
+// Each wrapper passes the address of the local variable 'value' into the push_back() function.
+// The value stored at that address is then copied by caling push_back() into the vector's memory.
 CvecError cvec_push_char(Cvec *v, char value) { return push_back(v, &value, CVEC_INTEGER); }
 CvecError cvec_push_uchar(Cvec *v, unsigned char value) { return push_back(v, &value, CVEC_INTEGER); }
 CvecError cvec_push_string(Cvec *v, const char* str) 
 {
-	// Create a heap-allocated copy of the input string.
-	// strdup() uses malloc() internally, and must be freed -> cvec_free().
+	// Create a heap-allocated copy of the passed string.
+	// strdup() uses malloc() internally and is freed by calling cvec_free().
 	// The copy is importand because the original string can be created on the stack like a temporary address in a fuction and not a const string-literal.
 	char *copy_str = strdup(str);
 	if (!copy_str) {
 		return CVEC_ERR_ALLOC;
 	}
-	// Pass the address of the copy (i.e., a pointer to the heap-allocated string -> type char**) into push_back, which will store it in the vector.
 	return push_back(v, &copy_str, CVEC_STRING);
 }
 
@@ -36,7 +33,8 @@ CvecError cvec_push_double(Cvec *v, double value) { return push_back(v, &value, 
 CvecError cvec_push_ldouble(Cvec *v, long double value) { return push_back(v, &value, CVEC_LONG_DOUBLE); }
 
 
-// Get functions for specific types
+// Wrapper for the core get_copy() function to handle different datatypes.
+// The value and the error-type is passed to the appropriate GetValue struct.
 GetValueChar get_char(Cvec *v, size_t index) 
 {
 	char val;
@@ -179,11 +177,9 @@ GetValueLdouble get_ldouble(Cvec *v, size_t index)
 }
 
 
-// Insert wrapper functinos for specific datatypes
-/*
- * Each function passes the address of the local variable 'value' and an indeex value to insert().
- * The value stored at that address is then copied into the vector's memory.
- */
+// Wrapper for the core insert() function to handle different data types.
+// Each wrapper passes the address of a local variable 'value' and the index at wich the value should be inserted.
+// The value stored at that address is then copied by calling insert() into the vector's memory at the given index.
 CvecError insert_char(Cvec *v, size_t index, char value) { return insert(v, index, &value, CVEC_CHAR); }
 CvecError insert_uchar(Cvec *v, size_t index, unsigned char value) { return insert(v, index, &value, CVEC_UCHAR); }
 CvecError insert_string(Cvec *v, size_t index, const char* str) 
@@ -209,7 +205,7 @@ CvecError insert_float(Cvec *v, size_t index, float value) { return insert(v, in
 CvecError insert_double(Cvec *v, size_t index, double value) { return insert(v, index, &value, CVEC_DOUBLE); }
 CvecError insert_ldouble(Cvec *v, size_t index, long double value) { return insert(v, index, &value, CVEC_LONG_DOUBLE); }
 
-
+// Wrapper for the core insert_range() function to handle different data types. 
 CvecError insert_range_char(Cvec *v, size_t index, char *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
 CvecError insert_range_uchar(Cvec *v, size_t index, unsigned char *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
 CvecError insert_range_string(Cvec *v, size_t index, char **arr, size_t arr_length) 
