@@ -1,16 +1,20 @@
+/* Wrapper implementations for the core cvec functions to support 
+ * different data types. */
+
 #include "cvec_internals.h"
 
 
-// Wrapper for core push_back() function to handle differnt datatypes.
+// Wrapper for push_back().
 // Each wrapper passes the address of the local variable 'value' into the push_back() function.
 // The value stored at that address is then copied by caling push_back() into the vector's memory.
 CvecError cvec_push_char(Cvec *v, char value) { return push_back(v, &value, CVEC_INTEGER); }
 CvecError cvec_push_uchar(Cvec *v, unsigned char value) { return push_back(v, &value, CVEC_INTEGER); }
 CvecError cvec_push_string(Cvec *v, const char* str) 
 {
-	// Create a heap-allocated copy of the passed string.
+	// Create's a heap-allocated copy of the passed string.
 	// strdup() uses malloc() internally and is freed by calling cvec_free().
-	// The copy is importand because the original string can be created on the stack like a temporary address in a fuction and not a const string-literal.
+	// The copy is important because the original string may reside on the stack (e.g., as a local or temporary variable) rather than being a string literal
+	// and push_back() saves the pointer of the string and not the string itself.
 	char *copy_str = strdup(str);
 	if (!copy_str) {
 		return CVEC_ERR_ALLOC;
@@ -33,7 +37,7 @@ CvecError cvec_push_double(Cvec *v, double value) { return push_back(v, &value, 
 CvecError cvec_push_ldouble(Cvec *v, long double value) { return push_back(v, &value, CVEC_LONG_DOUBLE); }
 
 
-// Wrapper for the core get_copy() function to handle different datatypes.
+// Wrapper for get_copy().
 // The value and the error-type is passed to the appropriate GetValue struct.
 GetValueChar get_char(Cvec *v, size_t index) 
 {
@@ -177,7 +181,7 @@ GetValueLdouble get_ldouble(Cvec *v, size_t index)
 }
 
 
-// Wrapper for the core insert() function to handle different data types.
+// Wrapper for insert().
 // Each wrapper passes the address of a local variable 'value' and the index at wich the value should be inserted.
 // The value stored at that address is then copied by calling insert() into the vector's memory at the given index.
 CvecError insert_char(Cvec *v, size_t index, char value) { return insert(v, index, &value, CVEC_CHAR); }
@@ -205,18 +209,25 @@ CvecError insert_float(Cvec *v, size_t index, float value) { return insert(v, in
 CvecError insert_double(Cvec *v, size_t index, double value) { return insert(v, index, &value, CVEC_DOUBLE); }
 CvecError insert_ldouble(Cvec *v, size_t index, long double value) { return insert(v, index, &value, CVEC_LONG_DOUBLE); }
 
-// Wrapper for the core insert_range() function to handle different data types. 
+
+// Wrapper for insert_range().
+// Passes the array pointer, the target index and the array length.
+// insert_range() then copies the values into the vector.
 CvecError insert_range_char(Cvec *v, size_t index, char *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
 CvecError insert_range_uchar(Cvec *v, size_t index, unsigned char *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
 CvecError insert_range_string(Cvec *v, size_t index, char **arr, size_t arr_length) 
 {
-    // Array of heap-pointers
+    // Local array of string pointers allocated on the heap
     char **str_arr_copy = malloc(arr_length * sizeof(char*));
-    if (!str_arr_copy) return CVEC_ERR_ALLOC;
+    if (!str_arr_copy) {
+		return CVEC_ERR_ALLOC;
+	}
 
     for (size_t i = 0; i < arr_length; i++) 
 	{
-        str_arr_copy[i] = strdup(arr[i]);
+		// Copies each string from the passed array into the local array
+		str_arr_copy[i] = strdup(arr[i]);
+
         if (!str_arr_copy[i]) {
             // Cleaning, if strdup fails
             for (size_t j = 0; j < i; j++) free(str_arr_copy[j]);
@@ -226,9 +237,6 @@ CvecError insert_range_string(Cvec *v, size_t index, char **arr, size_t arr_leng
     }
 
     CvecError err = insert_range(v, index, arr_length, str_arr_copy, CVEC_STRING);
-
-    // Optional: wenn insert_range die Ownership übernimmt, dann hier nichts freigeben
-    // ansonsten:
     free(str_arr_copy);
 
     return err;

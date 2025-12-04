@@ -1,5 +1,9 @@
+
+/* Functions only unsed internally by cVector. */
+
 #ifndef CVEC_INTERNAL_H
 #define CVEC_INTERNAL_H
+
 
 #include "cvec.h" 
 
