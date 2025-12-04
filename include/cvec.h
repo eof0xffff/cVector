@@ -8,7 +8,7 @@
 #include <string.h>
 
 // Type-generic macros.
-// provide a convenient, type-safe interface for working with vectors 
+// Provide a convenient, type-safe interface for working with vectors 
 // of different data types without manually calling the type-specific functions.
 #define cvec_init(v, type) \
     _Generic((type)0, \
