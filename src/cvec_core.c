@@ -12,6 +12,10 @@ CvecError push_back(Cvec *v, void *element, CvecType expected_type)
     }
 
     if (v->length == v->capacity) {
+		if (v->capacity > SIZE_MAX / 2) {
+			return CVEC_ERR_OVERFLOW;
+		}
+
         size_t new_capacity = v->capacity ? v->capacity * 2 : 1;
         void *temp = realloc(v->data, new_capacity * v->element_size);
 
@@ -62,19 +66,33 @@ CvecError insert(Cvec *v, size_t index, void *element, CvecType expected_type) {
 CvecError insert_range(Cvec *v, size_t index, size_t count, void *arr, CvecType expected_type) 
 {
     if (v->datatype != expected_type) {
-        return CVEC_ERR_TYPE;
-    }
-
+		return CVEC_ERR_TYPE;
+	}
     if (index > v->length) {
-        return CVEC_ERR_INDEX_OUT_OF_BOUNDS;
-    }
+		return CVEC_ERR_INDEX_OUT_OF_BOUNDS;
+	}
+	if (arr == NULL && count > 0) {
+		return CVEC_ERR_NULL_INPUT;
+	}
+	if (count > SIZE_MAX / v->element_size) {
+		return CVEC_ERR_OVERFLOW;
+	}
 
     size_t new_length = v->length + count;
+
     if (new_length > v->capacity) {
-        size_t new_capacity = v->capacity ? v->capacity * 2 : 1;
-        while (new_capacity < new_length) {
-            new_capacity *= 2;
-        }
+		size_t new_capacity = v->capacity;
+
+		if (new_capacity == 0) {
+			new_capacity = 1;
+		}
+
+		while (new_capacity < new_length) {
+			if (new_capacity > SIZE_MAX / 2) {
+				return CVEC_ERR_OVERFLOW;
+			}
+			new_capacity *= 2;
+		}
 
         void *new_data = realloc(v->data, new_capacity * v->element_size);
         if (!new_data) {

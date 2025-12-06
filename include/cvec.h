@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>  /* SIZE_MAX */
 
 // Type-generic macros.
 // Provide a convenient, type-safe interface for working with vectors 
@@ -105,7 +106,9 @@ typedef enum error_msg {
 	CVEC_ERR_INDEX_OUT_OF_BOUNDS,
 	CVEC_ERR_INVALID_RANGE,
 	CVEC_ERR_EMPTY,
-	CVEC_ERR_TYPE
+	CVEC_ERR_TYPE,
+	CVEC_ERR_NULL_INPUT,
+	CVEC_ERR_OVERFLOW
 } CvecError;
 
 // Accepted datatype's for cvec
