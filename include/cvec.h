@@ -65,6 +65,23 @@
         long double: get_ldouble \
     )(v, index)
 
+#define cvec_replace(v, index, val) \
+    _Generic((val), \
+        char:               replace_char, \
+        unsigned char:      replace_uchar, \
+        char*:              replace_string, \
+        short:              replace_short, \
+        int:                replace_int, \
+        unsigned int:       replace_uint, \
+        long:               replace_long, \
+        long long:          replace_llong, \
+        unsigned long:      replace_ulong, \
+        unsigned long long: replace_ullong, \
+        float:              replace_float, \
+        double:             replace_double, \
+        long double:        replace_ldouble \
+    )(v, index, val)
+
 #define cvec_insert(v, index, val) \
     _Generic((val), \
 		char: insert_char, \
@@ -108,7 +125,8 @@ typedef enum error_msg {
 	CVEC_ERR_EMPTY,
 	CVEC_ERR_TYPE,
 	CVEC_ERR_NULL_INPUT,
-	CVEC_ERR_OVERFLOW
+	CVEC_ERR_OVERFLOW,
+	CVEC_ERR_NULL
 } CvecError;
 
 // Accepted datatype's for cvec
