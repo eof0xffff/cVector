@@ -49,37 +49,37 @@
 
 #define cvec_get(v, index, type) \
     _Generic((type)0, \
-        char:				get_char, \
-        unsigned char:		get_uchar, \
-        char*:				get_string, \
-        bool:				get_bool, \
-        short:				get_short, \
-        int:				get_int, \
-        unsigned int:		get_uint, \
-        long:				get_long, \
-        long long:			get_llong, \
-        unsigned long:		get_ulong, \
+        char: get_char, \
+        unsigned char: get_uchar, \
+        char*: get_string, \
+        bool: get_bool, \
+        short: get_short, \
+        int: get_int, \
+        unsigned int: get_uint, \
+        long: get_long, \
+        long long: get_llong, \
+        unsigned long: get_ulong, \
         unsigned long long: get_ullong, \
-        float:				get_float, \
-        double:				get_double, \
-        long double:		get_ldouble \
+        float: get_float, \
+        double: get_double, \
+        long double: get_ldouble \
     )(v, index)
 
 #define cvec_replace(v, index, val) \
     _Generic((val), \
-        char:               replace_char, \
-        unsigned char:      replace_uchar, \
-        char*:              replace_string, \
-        short:              replace_short, \
-        int:                replace_int, \
-        unsigned int:       replace_uint, \
-        long:               replace_long, \
-        long long:          replace_llong, \
-        unsigned long:      replace_ulong, \
+        char: replace_char, \
+        unsigned char: replace_uchar, \
+        char*: replace_string, \
+        short: replace_short, \
+        int: replace_int, \
+        unsigned int: replace_uint, \
+        long: replace_long, \
+        long long: replace_llong, \
+        unsigned long: replace_ulong, \
         unsigned long long: replace_ullong, \
-        float:              replace_float, \
-        double:             replace_double, \
-        long double:        replace_ldouble \
+        float: replace_float, \
+        double: replace_double, \
+        long double: replace_ldouble \
     )(v, index, val)
 
 #define cvec_insert(v, index, val) \
