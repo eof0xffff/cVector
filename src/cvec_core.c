@@ -36,15 +36,17 @@ CvecError push_back(Cvec *v, void *element, CvecType expected_type)
 
     v->length++;
     return CVEC_OK;
-}
+	}
 
 
 // Copies the element at the given index from the vector into the memory pointed
 // to by 'dest'. This ensures the caller receives a standalone copy.
 CvecError get_copy(const Cvec *v, size_t index, void *dest) 
 {
+
 	if (v == NULL) return CVEC_ERR_NULL;
 	if (v->length == 0) return CVEC_ERR_EMPTY;
+	if (dest == NULL) return CVEC_ERR_NULL;
     if (index >= v->length) return CVEC_ERR_INDEX_OUT_OF_BOUNDS;
 
     memcpy(dest, (char *)v->data + index * v->element_size, v->element_size);
@@ -69,7 +71,7 @@ CvecError replace(Cvec *v, size_t index, void *element, CvecType expected_type)
 
 		size_t new_capacity = v->capacity ? v->capacity * 2 : 1;
 
-		if(new_capacity > SIZE_MAX / v->element_size) 
+		if(new_capacity > SIZE_MAX / v->element_size)
 			return CVEC_ERR_OVERFLOW;	// Byte-overflow (new_capacity * element_size)
 
 		void *tmp = realloc(v->data, new_capacity * v->element_size);
@@ -226,6 +228,7 @@ CvecError erase_range(Cvec *v, size_t begin, size_t end)
 CvecError shrink_to_fit(Cvec *v) 
 {
 	if (v == NULL) return CVEC_ERR_NULL;
+	if (v->length > SIZE_MAX / v->element_size) return CVEC_ERR_OVERFLOW;
 
     void *temp = realloc(v->data, v->length * v->element_size);
     

@@ -1,8 +1,5 @@
 #include "cvec.h"
 
-/*
-TODO: Implement: string functinos, clear, pop_back, comment documentation
-*/
 
 void printCvecValue(Cvec *v, int index) 
 {

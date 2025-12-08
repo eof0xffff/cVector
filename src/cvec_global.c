@@ -11,6 +11,8 @@ CvecError cvec_push_char(Cvec *v, char value) { return push_back(v, &value, CVEC
 CvecError cvec_push_uchar(Cvec *v, unsigned char value) { return push_back(v, &value, CVEC_INTEGER); }
 CvecError cvec_push_string(Cvec *v, const char* str) 
 {
+	if(str == NULL) return CVEC_ERR_NULL;
+
 	// Create's a heap-allocated copy of the passed string.
 	// strdup() uses malloc() internally and is freed by calling cvec_free().
 	// The copy is important because the original string may reside on the stack (e.g., as a local or temporary variable) rather than being a string literal
@@ -18,8 +20,10 @@ CvecError cvec_push_string(Cvec *v, const char* str)
 
 	char *copy_str = strdup(str);
 	if (!copy_str) {
+		free(copy_str);
 		return CVEC_ERR_ALLOC;
 	}
+
 	return push_back(v, &copy_str, CVEC_STRING);
 }
 
@@ -187,9 +191,13 @@ GetValueLdouble get_ldouble(Cvec *v, size_t index)
 // value should replace the element in the vector. The stored value is copied via replace().
 CvecError replace_char(Cvec *v, size_t index, char value) { return replace(v, index, &value, CVEC_CHAR); }
 CvecError replace_uchar(Cvec *v, size_t index, unsigned char value) { return replace(v, index, &value, CVEC_UCHAR); }
-CvecError replace_string(Cvec *v, size_t index, const char* str) {
+CvecError replace_string(Cvec *v, size_t index, const char* str) 
+{
+	if(str == NULL) return CVEC_ERR_NULL;
+
     char *copy_str = strdup(str);
     if (!copy_str) {
+		free(copy_str);
         return CVEC_ERR_ALLOC;
     }
     return replace(v, index, &copy_str, CVEC_STRING);
@@ -215,10 +223,14 @@ CvecError insert_char(Cvec *v, size_t index, char value) { return insert(v, inde
 CvecError insert_uchar(Cvec *v, size_t index, unsigned char value) { return insert(v, index, &value, CVEC_UCHAR); }
 CvecError insert_string(Cvec *v, size_t index, const char* str) 
 {
+	if(str == NULL) return CVEC_ERR_NULL;
+
 	char *copy_str = strdup(str);
 	if (!copy_str) {
+		free(copy_str);
 		return CVEC_ERR_ALLOC;
 	}
+
     return insert(v, index, &copy_str, CVEC_STRING);
 }
 
@@ -244,11 +256,13 @@ CvecError insert_range_char(Cvec *v, size_t index, char *arr, size_t arr_length)
 CvecError insert_range_uchar(Cvec *v, size_t index, unsigned char *arr, size_t arr_length) { return insert_range(v, index, arr_length, arr, CVEC_INTEGER); }
 CvecError insert_range_string(Cvec *v, size_t index, char **arr, size_t arr_length) 
 {
+	if(arr == NULL) return CVEC_ERR_NULL;
+
     // Local array of string pointers allocated on the heap
     char **str_arr_copy = malloc(arr_length * sizeof(char*));
-    if (!str_arr_copy) {
+   
+	if (!str_arr_copy) 
 		return CVEC_ERR_ALLOC;
-	}
 
     for (size_t i = 0; i < arr_length; i++) 
 	{
@@ -256,7 +270,6 @@ CvecError insert_range_string(Cvec *v, size_t index, char **arr, size_t arr_leng
 		str_arr_copy[i] = strdup(arr[i]);
 
         if (!str_arr_copy[i]) {
-            // Cleaning, if strdup fails
             for (size_t j = 0; j < i; j++) free(str_arr_copy[j]);
             free(str_arr_copy);
             return CVEC_ERR_ALLOC;
