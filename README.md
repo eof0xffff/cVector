@@ -1,2 +1,2 @@
 # cVector
-This ist my own implementation of a cpp-style vector written in plain C.  
+A dynamic array implemented in C that emulates basic functionality of a C++ vector.
