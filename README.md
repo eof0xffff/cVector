@@ -22,7 +22,7 @@ The '_Generic' keyword is used to implement type-generic code that automatically
 This allows users to call vector operations without explicitly specifying the underlying data type.  
 By initilaising a vector
 
-When initializing a vector, the intended type must be specified. Afterwards, the desired generic macro function can simply be called. 
+When initializing a vector, the intended type must be specified. Afterwards, the desired generic macro function can simply be called.  
 ´´´C
 // Creating a int vector
 Cvec viInt;
