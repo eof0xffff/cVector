@@ -18,7 +18,7 @@ It supports all basic datatypes:
 - double
 - long double
 
-The '_Generic' keyword in C allows the implementation of type-generic macros that automatically select the correct function based on the argument’s type.
+The `_Generic` keyword in C allows the implementation of type-generic macros that automatically select the correct function based on the argument’s type.
 This enables users to call vector functions without manually specifying the underlying data type each time.
 
 When initializing a vector, the desired element type must be explicitly provided.
@@ -38,4 +38,4 @@ cvec_push_back(&viInt, 1);
 cvec_push_back(&vsStr, "first");
 ```
 
-The only exception is the 'cvec_get()' function. Here, the desired type must be specified with each call.
+The only exception is the `cvec_get()` function. Here, the desired type must be specified with each call.
