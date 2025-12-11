@@ -45,5 +45,5 @@ This section explains all functions supported by cVector.
 A complete working test is included in **main**, demonstrating each function using the types `int` and `string`. 
 
 ### push_back()  
-This function add's a copy of an element at the end of the vector.
-When the vector is full (i.e., `length == capacity`), the capacity is automatically doubled.
+This function add's a copy of an element at the end of the vector.  
+When the vector is full (i.e., `length == capacity`), the capacity is automatically doubled.  
