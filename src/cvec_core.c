@@ -78,7 +78,7 @@ CvecError replace(Cvec *v, size_t index, void *element, CvecType expected_type)
 	
 		if (!tmp) return CVEC_ERR_ALLOC;
         
-		v->data = tmp;
+			v->data = tmp;
 		v->capacity = new_capacity;
 	}
 
@@ -87,7 +87,6 @@ CvecError replace(Cvec *v, size_t index, void *element, CvecType expected_type)
     
 	return CVEC_OK;
 }
-
 
 // Inserts a value at the given index.
 // By adding a new element, all next elements are moved to the right.

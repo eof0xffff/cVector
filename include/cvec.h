@@ -12,22 +12,23 @@
 // Provide a convenient, type-safe interface for working with vectors 
 // of different data types without manually calling the type-specific functions.
 #define cvec_init(v, type) \
-    _Generic((type)0, \
-		char: init_char, \
-		unsigned char: init_uchar, \
-		char*: init_string, \
-		bool: init_bool, \
-		short: init_short, \
-        int: init_int, \
-		unsigned int: init_uint, \
-		long: init_long, \
-		long long: init_llong, \
-		unsigned long: init_ulong, \
-		unsigned long long: init_ullong, \
-		float: init_float, \
-		double: init_double, \
-		long double: init_ldouble \
-    )(v)
+    _Generic(((type*)0), \
+        char*: init_char, \
+        unsigned char*: init_uchar, \
+        char**: init_string, \
+        bool*: init_bool, \
+        short*: init_short, \
+        int*: init_int, \
+        unsigned int*: init_uint, \
+        long*: init_long, \
+        long long*: init_llong, \
+        unsigned long*: init_ulong, \
+        unsigned long long*: init_ullong, \
+        float*: init_float, \
+        double*: init_double, \
+        long double*: init_ldouble, \
+        default: cvec_init_struct \
+    )(v, sizeof(type))
 
 #define cvec_push_back(v, val) \
     _Generic((val), \
@@ -116,8 +117,8 @@
 		long double*: insert_range_ldouble \
     )((v), (index), (arr), sizeof(arr)/sizeof((arr)[0]))
 
-#define cvec_emplace_back(v, type, slot) \
-    cvec_emplace_back_generic((v), sizeof(type), (void**)&(slot))
+#define cvec_emplace_back(v, type, slot_ptr) \
+    cvec_emplace_back_generic((v), sizeof(type), (void**)&(slot_ptr))
 
 
 // Supported error types
@@ -149,7 +150,8 @@ typedef enum cvec_types {
 	CVEC_ULONG_LONG,
 	CVEC_FLOAT,
 	CVEC_DOUBLE,
-	CVEC_LONG_DOUBLE
+	CVEC_LONG_DOUBLE,
+	CVEC_STRUCT
 } CvecType;
 
 typedef struct {
@@ -237,20 +239,22 @@ typedef struct {
 } GetValueLdouble;
 
 
-void init_char(Cvec *v);
-void init_uchar(Cvec *v);
-void init_string(Cvec *v);
-void init_bool(Cvec *v);
-void init_short(Cvec *v);
-void init_int(Cvec *v);
-void init_uint(Cvec *v);
-void init_long(Cvec *v);
-void init_llong(Cvec *v);
-void init_ulong(Cvec *v);
-void init_ullong(Cvec *v);
-void init_float(Cvec *v);
-void init_double(Cvec *v);
-void init_ldouble(Cvec *v);
+CvecError init_char(Cvec *v, size_t element_size);
+CvecError init_uchar(Cvec *v, size_t element_size);
+CvecError init_string(Cvec *v, size_t element_size);
+CvecError init_bool(Cvec *v, size_t element_size);
+CvecError init_short(Cvec *v, size_t element_size);
+CvecError init_int(Cvec *v, size_t element_size);
+CvecError init_uint(Cvec *v, size_t element_size);
+CvecError init_long(Cvec *v, size_t element_size);
+CvecError init_llong(Cvec *v, size_t element_size);
+CvecError init_ulong(Cvec *v, size_t element_size);
+CvecError init_ullong(Cvec *v, size_t element_size);
+CvecError init_float(Cvec *v, size_t element_size);
+CvecError init_double(Cvec *v, size_t element_size);
+CvecError init_ldouble(Cvec *v, size_t element_size);
+/* struct / raw init */
+CvecError cvec_init_struct(Cvec *v, size_t element_size);
 
 CvecError cvec_push_char(Cvec *v, char value);
 CvecError cvec_push_uchar(Cvec *v, unsigned char value);

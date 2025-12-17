@@ -143,19 +143,21 @@ int main() {
 	cvec_emplace_back(&ints, int, test);
 	test = 123;	// Writes directly into the vector
 
+	printf("Test with struct");
+
 	typedef struct {
 		char name[32];
 		int age;
 	} Person;
 
-	Person person;
-
 	Cvec vPerson;
-	cvec_init(&vPerson, sizeof(person));
+	cvec_init(&vPerson, Person);
 
-	cvec_emplace_back(&vPerson, Person, person);
-	strcpy(p.name, "Alice");
-	person.age = 30;
+	Person *p = NULL;
+	cvec_emplace_back(&vPerson, Person, p);
+
+	strcpy(p->name, "Alice");
+	p->age = 30;
 
     return 0;
 }
