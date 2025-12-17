@@ -246,7 +246,7 @@ CvecError cvec_emplace_back_generic(Cvec *v, size_t element_size, void **slot)
         v->capacity = new_cap;
     }
 
-    // Return adress inside the vector
+    // Return the last adress inside the vector
     *slot = (char*)v->data + v->length * element_size;
 
     v->length++;
