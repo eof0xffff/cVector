@@ -38,7 +38,7 @@ cvec_push_back(&viInt, 1);
 cvec_push_back(&viStr, "first");
 ```
 
-The only exception is the `cvec_get()` function. Here, the desired type must be specified with each call.
+The only exception's are the `cvec_get()` and `emplace_back()` function's. Here, the desired type must be specified with each call.
 
 ## Usage
 This section explains all functions supported by cVector.  
