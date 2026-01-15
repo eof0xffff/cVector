@@ -331,6 +331,7 @@ CvecError insert_range_float(Cvec *v, size_t index, float *arr, size_t arr_lengt
 CvecError insert_range_double(Cvec *v, size_t index, double *arr, size_t arr_length);
 CvecError insert_range_ldouble(Cvec *v, size_t index, long double *arr, size_t arr_length);
 
+CvecError at(Cvec *v, size_t index, void* dest); 
 CvecError cvec_emplace_back_generic(Cvec *v, size_t element_size, void **slot);
 
 CvecError shrink_to_fit(Cvec *v);

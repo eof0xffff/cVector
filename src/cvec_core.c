@@ -88,6 +88,7 @@ CvecError replace(Cvec *v, size_t index, void *element, CvecType expected_type)
 	return CVEC_OK;
 }
 
+
 // Inserts a value at the given index.
 // By adding a new element, all next elements are moved to the right.
 // It can only insert values if the vctor is not empty.
@@ -251,6 +252,17 @@ CvecError cvec_emplace_back_generic(Cvec *v, size_t element_size, void **slot)
 
     v->length++;
     return CVEC_OK;
+}
+
+CvecError at(Cvec *v, size_t index, void* dest) 
+{
+	if (v == NULL) return CVEC_ERR_NULL;
+	if (v->length == 0) return CVEC_ERR_EMPTY;
+	if (dest == NULL) return CVEC_ERR_NULL;
+    if (index >= v->length) return CVEC_ERR_INDEX_OUT_OF_BOUNDS;
+	
+	dest = (char *)v->data + index * v->element_size;
+	return CVEC_OK;
 }
 
 
