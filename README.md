@@ -3,7 +3,7 @@ A dynamic array implemented in C that emulates basic functionality of a C++ vect
 This project was created to offer a fast and simple solution for dynamic arrays in C and focuses on user-friendliness.
 
 ## Features
-It supports all basic datatypes:
+The library supports all basic datatypes:
 - char
 - unsigned char
 - bool
